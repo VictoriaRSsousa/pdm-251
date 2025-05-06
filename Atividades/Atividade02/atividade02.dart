@@ -1,11 +1,17 @@
 // Agregação e Composição
 import 'dart:convert';
 
+
 class Dependente {
   late String _nome;
 
   Dependente(String nome) {
     this._nome = nome;
+  }
+    Map<String, dynamic> toJson() {
+    return {
+      'nome': _nome,
+    };
   }
 }
 
@@ -17,6 +23,12 @@ class Funcionario {
     this._nome = nome;
     this._dependentes = dependentes;
   }
+    Map<String, dynamic> toJson() {
+    return {
+      'nome': _nome,
+      'dependentes': _dependentes.map((d) => d.toJson()).toList(),
+    };
+  }
 }
 
 class EquipeProjeto {
@@ -26,6 +38,12 @@ class EquipeProjeto {
   EquipeProjeto(String nomeprojeto, List<Funcionario> funcionarios) {
     _nomeProjeto = nomeprojeto;
     _funcionarios = funcionarios;
+  }
+    Map<String, dynamic> toJson() {
+    return {
+      'nomeProjeto': _nomeProjeto,
+      'funcionarios': _funcionarios.map((f) => f.toJson()).toList(),
+    };
   }
 }
 
@@ -58,11 +76,20 @@ void main() {
 
   //CRIAÇÃO DE EQUIPES
 
-  var equipe1 = new EquipeProjeto('nomeprojeto1', [funcionario5, funcionario4]);
+  var funcionariosList1 = [funcionario5, funcionario4];
+  var funcionariosList2 = [funcionario3, funcionario2];
+  var funcionariosList3 = [funcionario1];
+  var equipe1 = new EquipeProjeto('nomeprojeto1', funcionariosList1);
 
-  var equipe2 = new EquipeProjeto('nomeprojeto1', [funcionario2, funcionario3]);
+  var equipe2 = new EquipeProjeto('nomeprojeto1', funcionariosList2);
 
-  var equipe3 = new EquipeProjeto('nomeprojeto1', [funcionario1]);
+  var equipe3 = new EquipeProjeto('nomeprojeto1', funcionariosList3);
+
+
+//IMPRESSÃO DOS DADOS
+  print(jsonEncode(equipe1.toJson()));
+  print(jsonEncode(equipe2.toJson()));
+  print(jsonEncode(equipe3.toJson()));
 
   // 1. Criar varios objetos Dependentes
   // 2. Criar varios objetos Funcionario
